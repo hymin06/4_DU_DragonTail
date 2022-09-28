@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Error : MonoBehaviour
 {
-    [SerializeField]int danielanm = 1;
+    int tetqe =3;
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
