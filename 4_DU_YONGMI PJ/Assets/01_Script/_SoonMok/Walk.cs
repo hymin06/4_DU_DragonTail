@@ -10,6 +10,7 @@ public class Walk : MonoBehaviour
     [SerializeField] private float jumppower;
     [SerializeField] private float speed;
     [SerializeField] private BoxCollider2D col;
+    [SerializeField] private float gravity;
     Rigidbody2D rigibody;
 
     private void Awake()
@@ -44,6 +45,7 @@ public class Walk : MonoBehaviour
         }
         else
         {
+                rigibody.velocity += Vector2.down * gravity * Time.deltaTime;
             return false;
         }
     }
