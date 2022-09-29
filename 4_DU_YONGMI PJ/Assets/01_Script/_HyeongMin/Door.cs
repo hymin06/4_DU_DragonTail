@@ -47,5 +47,6 @@ public class Door : MonoBehaviour
             transform.position -= new Vector3(0, speedOpen * Time.deltaTime, 0);
             weightOpen += Time.deltaTime;
         }
+        //
     }
 }
