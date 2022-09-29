@@ -5,11 +5,14 @@ using UnityEngine;
 public class Walk : MonoBehaviour
 {
     [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private LayerMask _layerMask2;
     [SerializeField] private float _boxX;
     [SerializeField] private float _boxY;
     [SerializeField] private float jumppower;
     [SerializeField] private float speed;
     [SerializeField] private BoxCollider2D col;
+    [SerializeField] private Collider2D col2;
+    [SerializeField] private RaycastHit2D downpan;
     [SerializeField] private float gravity;
     Rigidbody2D rigibody;
 
@@ -29,8 +32,18 @@ public class Walk : MonoBehaviour
     }
     void Jump(float JumpPow)
     {
+        if (DownJump())
+        {
+
+            if (Input.GetKeyDown(KeyCode.X) && Input.GetKey(KeyCode.DownArrow))
+            {
+                StartCoroutine(DownStair());
+                rigibody.AddForce(new Vector2(0, -JumpPow), ForceMode2D.Impulse);
+            }
+        }
         if (CheckGround())
         {
+
             if (Input.GetKeyDown(KeyCode.X))
             {
                 rigibody.AddForce(new Vector2(0, JumpPow), ForceMode2D.Impulse);
@@ -39,14 +52,34 @@ public class Walk : MonoBehaviour
     }
     bool CheckGround()
     {
-        if(Physics2D.BoxCast(col.bounds.center, col.size, 0f, Vector2.down, 0.1f, _layerMask))
+        if(Physics2D.BoxCast(col.bounds.center, col.size, 0f, Vector2.down, 0.1f, _layerMask)||
+            Physics2D.BoxCast(col.bounds.center, col.size, 0f, Vector2.down, 0.1f, _layerMask2))
         {
             return true;
         }
         else
         {
-                rigibody.velocity += Vector2.down * gravity * Time.deltaTime;
+            rigibody.velocity += Vector2.down * gravity * Time.deltaTime;
             return false;
         }
+    }
+    bool DownJump()
+    {
+        downpan = Physics2D.BoxCast(col.bounds.center, col.size, 0f, Vector2.down, 0.1f, _layerMask2);
+        if (downpan)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    IEnumerator DownStair()
+    {
+        col2= downpan.collider;
+        col2.isTrigger = true;
+        yield return new WaitForSeconds(0.5f);
+        col2.isTrigger = false;
     }
 }
