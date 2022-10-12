@@ -24,11 +24,13 @@ public class Door : MonoBehaviour
         if(weightOpen <= 0)
         {
             weightOpen = 0;
+            transform.position = new Vector3(transform.position.x, (int)transform.position.y, 0);
             doorOpen = false;
         }
-        if (weightOpen >= weightNormal)
+        if (weightOpen > weightNormal)
         {
             weightOpen = weightNormal;
+            transform.position = new Vector3(transform.position.x, (int)transform.position.y, 0);
             doorClose = false;
         }
     }
@@ -47,6 +49,5 @@ public class Door : MonoBehaviour
             transform.position -= new Vector3(0, speedOpen * Time.deltaTime, 0);
             weightOpen += Time.deltaTime;
         }
-        //
     }
 }
