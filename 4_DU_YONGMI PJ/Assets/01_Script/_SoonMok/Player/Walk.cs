@@ -36,6 +36,14 @@ public class Walk : MonoBehaviour
         {
             LR = (int)x;
         }
+        if(LR == 1)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        if(LR == -1)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
         rigibody.velocity = new Vector2(x * speed, rigibody.velocity.y);
     }
     void Jump(float JumpPow)
@@ -43,7 +51,7 @@ public class Walk : MonoBehaviour
         if (DownJump())
         {
 
-            if (Input.GetKeyDown(KeyCode.X) && Input.GetKey(KeyCode.DownArrow))
+            if (Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.DownArrow))
             {
                 StartCoroutine(DownStair());
                 rigibody.AddForce(new Vector2(0, -JumpPow), ForceMode2D.Impulse);
@@ -52,7 +60,7 @@ public class Walk : MonoBehaviour
         if (JumpOk)
         {
 
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 rigibody.AddForce(new Vector2(0, JumpPow), ForceMode2D.Impulse);
             }
@@ -66,8 +74,6 @@ public class Walk : MonoBehaviour
             )
         {
             JumpOk = true;
-            Debug.Log(hit);
-            Debug.Log(hit2);
         }
         else
         {
