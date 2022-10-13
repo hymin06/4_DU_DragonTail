@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 188298479}
   - component: {fileID: 188298478}
   - component: {fileID: 188298477}
-  m_Layer: 10
+  m_Layer: 13
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 1402666043}
   - component: {fileID: 1402666042}
   - component: {fileID: 1402666041}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -723,7 +723,8 @@ GameObject:
   - component: {fileID: 1592916359}
   - component: {fileID: 1592916360}
   - component: {fileID: 1592916361}
-  m_Layer: 0
+  - component: {fileID: 1592916362}
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -742,11 +743,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6cd5034a856c584fbb00a98ffa5d417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySO: {fileID: 11400000, guid: cf88ed8851dc90047b46de52df00e801, type: 2}
+  _enemy: {fileID: 11400000, guid: cf88ed8851dc90047b46de52df00e801, type: 2}
+  speed: 0
+  afterNoChasingTime: 0
+  target: {fileID: 1709464529}
   layerMask:
     serializedVersion: 2
     m_Bits: 64
-  _isPlayerWatchRight: 0
+  nextMove: 0
+  randThinkTime: 0
+  _isThinking: 0
+  _isChasing: 0
+  _isCanDetectAttacking: 0
 --- !u!212 &1592916357
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -807,7 +815,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592916355}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.71, y: -3.32, z: 0}
+  m_LocalPosition: {x: -8.05, y: -1.55, z: 0}
   m_LocalScale: {x: 1.1059, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -860,9 +868,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1592916355}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b05fa40fb81e62408c6f5375b5521c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f6cbeefaec30434d92af35b1aeec017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemy: {fileID: 11400000, guid: cf88ed8851dc90047b46de52df00e801, type: 2}
+  target: {fileID: 1709464529}
+  _isAttack: 0
+  _isAttacking: 0
+--- !u!114 &1592916362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592916355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31bfa49968377e14fabce034a1538891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemy: {fileID: 11400000, guid: cf88ed8851dc90047b46de52df00e801, type: 2}
 --- !u!1 &1709464524
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,7 +903,7 @@ GameObject:
   - component: {fileID: 1709464525}
   m_Layer: 6
   m_Name: player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1015,7 +1040,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709464524}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.08, y: -3.22, z: 0}
+  m_LocalPosition: {x: -2.52, y: 1.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

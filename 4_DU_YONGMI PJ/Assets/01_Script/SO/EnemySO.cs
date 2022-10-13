@@ -4,24 +4,30 @@ using UnityEngine;
 
 public enum EnemyType
 {
-    ShortAttackEnemy,
-    LongAttackEnemy,
+    NormalEnemy,
+    ShieldEnemy,
     Boss
 }
 [CreateAssetMenu(menuName = "Asset/EnemySO")]
 public class EnemySO : ScriptableObject
 {
     public EnemyType enemyType;
-    public string name;
-    public int hp;
-    public int damage;
-    public float normalMoveSpeed;
-    public float AfterDetectMoveSpeed;
-    public float DetectPlayerDistance;
-    public float AttackRange;
-    public float AttackDelay;
-    public bool _isCollisionOther;
-    public LayerMask isCollisionTrueLayer;
+    public string enemyName;
+    [SerializeField] int hp;
+    [SerializeField] int damage;
+    [SerializeField] float beforeDetectSpeed;
+    [SerializeField] float afterDetectSpeed;
+    [SerializeField] float detectRange;
+    [SerializeField] float attackRange;
+    [SerializeField] float attackSpeed;
+    [SerializeField] float attackDelay;
 
-    
+    public int HP() { return hp; }
+    public int Damage() { return damage; }
+    public float BeforeDetectSpeed() { return beforeDetectSpeed; }
+    public float AfterDetectSpeed() { return afterDetectSpeed; }
+    public float DetectRange() { return detectRange; }
+    public float AttackRange() { return attackRange; }
+    public float AttackSpeed() { return attackSpeed; }
+    public float AttackDelay() { return attackDelay; }
 }
