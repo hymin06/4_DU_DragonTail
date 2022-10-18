@@ -14,7 +14,10 @@ public class Walk : MonoBehaviour
     [SerializeField] private Collider2D col2;
     [SerializeField] private RaycastHit2D downpan;
     [SerializeField] private float gravity;
+    [SerializeField] private bool JumpOk;
     Rigidbody2D rigibody;
+
+    public int LR;
 
     private void Awake()
     {
@@ -23,11 +26,24 @@ public class Walk : MonoBehaviour
     }
     private void Update()
     {
+        CheckGround();
         Move(Input.GetAxisRaw("Horizontal"));
         Jump(jumppower);
     }
     void Move(float x)
     {
+        if(x != 0)
+        {
+            LR = (int)x;
+        }
+        if(LR == 1)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        if(LR == -1)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
         rigibody.velocity = new Vector2(x * speed, rigibody.velocity.y);
     }
     void Jump(float JumpPow)
@@ -35,32 +51,34 @@ public class Walk : MonoBehaviour
         if (DownJump())
         {
 
-            if (Input.GetKeyDown(KeyCode.X) && Input.GetKey(KeyCode.DownArrow))
+            if (Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.DownArrow))
             {
                 StartCoroutine(DownStair());
                 rigibody.AddForce(new Vector2(0, -JumpPow), ForceMode2D.Impulse);
             }
         }
-        if (CheckGround())
+        if (JumpOk)
         {
 
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 rigibody.AddForce(new Vector2(0, JumpPow), ForceMode2D.Impulse);
             }
         }
     }
-    bool CheckGround()
+    void CheckGround()
     {
-        if(Physics2D.BoxCast(col.bounds.center, col.size, 0f, Vector2.down, 0.1f, _layerMask)||
-            Physics2D.BoxCast(col.bounds.center, col.size, 0f, Vector2.down, 0.1f, _layerMask2))
+        RaycastHit2D hit = Physics2D.BoxCast(col.bounds.center, col.size, 0f, Vector2.down, 0.1f, _layerMask);
+        RaycastHit2D hit2 = Physics2D.BoxCast(col.bounds.center, col.size, 0f, Vector2.down, 0.1f, _layerMask2);
+        if (hit || hit2
+            )
         {
-            return true;
+            JumpOk = true;
         }
         else
         {
             rigibody.velocity += Vector2.down * gravity * Time.deltaTime;
-            return false;
+            JumpOk = false;
         }
     }
     bool DownJump()
