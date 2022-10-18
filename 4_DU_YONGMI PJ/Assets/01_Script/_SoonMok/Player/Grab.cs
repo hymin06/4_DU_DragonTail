@@ -26,7 +26,7 @@ public class Grab : MonoBehaviour
         _walk = GetComponent<Walk>();
         state = State.Idle;
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<IsWeapon>())
         {
@@ -46,7 +46,7 @@ public class Grab : MonoBehaviour
             _grabObj.transform.rotation = Quaternion.AngleAxis(_angle, Vector3.forward);
             if (Input.GetMouseButtonDown(0))
             {
-                dir = (MousePoint - transform.position).normalized;
+                dir = (MousePoint - _grabPoint.transform.position).normalized;
                 _grabScript.Shoot(dir);
                 _grabScript = null;
                 _grabObj = null;

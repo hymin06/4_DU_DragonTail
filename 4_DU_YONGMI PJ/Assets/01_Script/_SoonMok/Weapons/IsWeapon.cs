@@ -27,6 +27,7 @@ public class IsWeapon : MonoBehaviour
     public void Shoot(Vector2 dir)
     {
         _shooting = true;
+        _rigidbody.gravityScale = 0;
         _rigidbody.AddForce(dir * _power, ForceMode2D.Impulse);
     }
 
@@ -34,7 +35,6 @@ public class IsWeapon : MonoBehaviour
     {
         if(collision.GetComponent<IsWall>() && _shooting)
         {
-
             _rigidbody.velocity = Vector2.zero;
             _collider.isTrigger = false;
             _shooting =false;
