@@ -6,7 +6,7 @@ using Cinemachine;
 public class StageChecker : MonoBehaviour
 {
     [SerializeField] private DoorChecker doorChecker;
-    CinemachineVirtualCamera virtualCamera;
+        CinemachineVirtualCamera virtualCamera;
     PolygonCollider2D polygonCollider;
     [SerializeField] private string camname;
     private void Awake()
