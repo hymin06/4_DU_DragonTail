@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemycharacteristic : EnemyBase
+public class Enemycharacteristic : MonoBehaviour
 {
+    [SerializeField] EnemySO _enemy;
     private void Awake()
     {
         switch (_enemy.enemyType)
@@ -24,7 +25,7 @@ public class Enemycharacteristic : EnemyBase
 
     void ShieldEnemy()
     {
-        
+
     }
 
     void Boss()

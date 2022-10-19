@@ -1,4 +1,3 @@
-//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +23,6 @@ public class EnemyMovement : EnemyBase
     //enemyState
     public bool _isThinking;
     public bool _isChasing;
-
     public bool _isCanDetectAttacking;
 
     Coroutine runningCoroutine = null;
@@ -32,16 +30,17 @@ public class EnemyMovement : EnemyBase
 
     EnemyAttack _enemyAttack;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         this.speed = _enemy.BeforeDetectSpeed();
         _rigid = GetComponent<Rigidbody2D>();
         _enemyAttack = GetComponent<EnemyAttack>();
         //nextMove = Random.Range(-1,2);
 
-        while(nextMove == 0)
+        while (nextMove == 0)
         {
-            nextMove = Random.Range(1,2);
+            nextMove = Random.Range(1, 2);
         }
 
         _isThinking = true;
@@ -53,43 +52,68 @@ public class EnemyMovement : EnemyBase
     {
         Debug.Log(nextMove);
         _rigid.velocity = new Vector2(nextMove * speed, _rigid.velocity.y);
-        
+
         dir = nextMove >= 0 ? Vector2.right : Vector2.left;
         origin = (Vector2)transform.position + (nextMove >= 0 ? Vector2.right : Vector2.left);
-        
-        DetectPlayer();
-
-        if (_isChasing && !_enemyAttack._isAttack)      
+        if (_isThinking)
         {
-            speed = _enemy.AfterDetectSpeed();
-            _isCanDetectAttacking=true;
-            afterNoChasingTime = 0;
+            if(nextMove != 0 && !_enemyAttack._isAttack)
+            {
+                //_animator.SetBool("IsRun", true);
+                //_animator.SetBool("IsIdle", false);
+            }
+            else if(nextMove == 0 && !_isChasing)
+            {
+                //_animator.SetBool("IsIdle", true);
+                //_animator.SetBool("IsRun", false);
+            }
+
+            if (_isChasing && !_enemyAttack._isAttack)
+            {
+                speed = _enemy.AfterDetectSpeed();
+                //_isCanDetectAttacking = true;
+                afterNoChasingTime = 0;
+            }
+            if (!_isChasing)
+            {
+                if(nextMove != 0)
+                {
+                    speed = _enemy.BeforeDetectSpeed();
+                }
+                //_isCanDetectAttacking = false;
+                PlatformCheck();
+                afterNoChasingTime += Time.deltaTime;
+                if (afterNoChasingTime > randThinkTime)
+                {
+                    afterNoChasingTime = 0;
+                    EnemyThink();
+                }
+            }
+            else 
+            {
+            
+            }
+
+            if (_enemyAttack._isAttack)
+            {
+                //_animator.SetBool("IsRun", false);
+            }
+            DetectPlayer();
         }
+        
         //else if (_isChasing && _enemyAttack._isAttack)
         //{
         //    speed = 0;
         //}
-        else if(!_isChasing)
-        {
-            speed = _enemy.BeforeDetectSpeed();
-            _isCanDetectAttacking = false;
-            PlatformCheck();
-            afterNoChasingTime += Time.deltaTime;
-            if(afterNoChasingTime > randThinkTime)
-            {
-                afterNoChasingTime = 0;
-                EnemyThink();
-            }
-        }
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.layer == 7)
+        if (collision.gameObject.layer == 7)
         {
             nextMove = -nextMove;
-        }    
+            afterNoChasingTime = Random.Range(0f,1f);//벽충돌후 적 생각쿨타임
+        }
     }
 
     public void EnemyThink()
@@ -103,13 +127,22 @@ public class EnemyMovement : EnemyBase
         else
         {
             randThinkTime = Random.Range(1f, 2f);
+            afterNoChasingTime = 0;
+            while(afterNoChasingTime < randThinkTime)
+            {
+                afterNoChasingTime += Time.deltaTime;
+            }
+            if(afterNoChasingTime > randThinkTime)
+            {
+                EnemyThink();
+            }
         }
 
         //if(runningCoroutine != null)
         //{
         //    StopCoroutine(runningCoroutine);
         //}
-       
+
         //runningCoroutine = StartCoroutine(EnemyNextThinkTime(randThinkTime));
     }
 
@@ -127,10 +160,10 @@ public class EnemyMovement : EnemyBase
         //detectPlayer[1] = Physics2D.Raycast(origin, dir, _enemy.DetectRange(), layerMask);
         //detectPlayer[2] = Physics2D.Raycast(origin, dir + (Vector2.down + dir * 7) / 8, _enemy.DetectRange(), layerMask);
         //DrawRays();
-        
+
         detectPlayer = Physics2D.Raycast(origin, dir, _enemy.DetectRange(), layerMask);
 
-        if(detectPlayer.collider == null)
+        if (detectPlayer.collider == null)
         {
             _isChasing = false;
         }
@@ -159,7 +192,8 @@ public class EnemyMovement : EnemyBase
         {
             Debug.Log("isNull");
             nextMove = -nextMove;
-            _isThinking = false;
+            //afterNoChasingTime = 2;
+            //_isThinking = false;
 
             //StartCoroutine(EnemyNextThinkTime(3));
 

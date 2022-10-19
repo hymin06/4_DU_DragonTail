@@ -8,40 +8,50 @@ public class EnemyAttack : EnemyBase
     EnemyMovement _enemyMoveMent;
 
     public bool _isAttack = false;
-    public bool _isAttacking = false;
+    public bool _isCanAttacking = true;
+
+    public int enemyNextAttack = 0;
 
     Coroutine _attackingCoroutine = null;
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _enemyMoveMent = GetComponent<EnemyMovement>();
     }
 
     private void Update()
     {
-        if (_enemyMoveMent._isCanDetectAttacking)
-        {
-            AttackPlayer();
-        }
+        //if (_enemyMoveMent._isCanDetectAttacking)
+        //{
+           AttackPlayer();
+        //}
     }
 
     public void AttackPlayer()
     {
-        if (Vector2.Distance(transform.position, target.position) <= _enemy.AttackRange())        {
+        if (Vector2.Distance(transform.position, target.position) <= _enemy.AttackRange())
+        {
             Debug.Log(Vector2.Distance(transform.position, target.position));
             _isAttack = true;
-            if (_isAttack)// && !_isAttacking
+            _enemyMoveMent.speed = 0;
+            //_animator.SetBool("IsCanAttack", true);
+            if (_isCanAttacking)// && !_isAttacking
             {
-                _enemyMoveMent.speed = 0;
-                if(_attackingCoroutine != null)
+                if (_attackingCoroutine != null)
                 {
                     StopCoroutine(_attackingCoroutine);
                 }
                 _attackingCoroutine = StartCoroutine("AttackingPlayer");
-            }  
+            }
+            else
+            {
+                _enemyMoveMent.speed = 0;
+            }
         }
         else
         {
             _isAttack = false;
+            //_animator.SetBool("IsCanAttack", false);
         }
     }
 
@@ -49,10 +59,17 @@ public class EnemyAttack : EnemyBase
     {
         //yield return new WaitForSeconds(_enemy.AttackDelay());
         //공격 애니메이션 실행;
-        Debug.Log("공격1");
-        _isAttacking = true; //공격하던건 마저 실행한후 감지할지 쫓아갈지 판단해주는
+        enemyNextAttack = Random.Range(1, 7);
+        if(enemyNextAttack >= 5)
+        {
+            //_animator.SetTrigger("CanSpecialAttack");
+        }
+        _isCanAttacking = false;
+        _enemyMoveMent._isThinking = false;
         yield return new WaitForSeconds(_enemy.AttackSpeed());
-        _isAttacking = false;
+        _isCanAttacking = true;
+        _enemyMoveMent._isThinking = true;
+
         Debug.Log("end attack");
     }
 }
