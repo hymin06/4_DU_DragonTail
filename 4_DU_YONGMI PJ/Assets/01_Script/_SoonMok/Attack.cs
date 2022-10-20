@@ -28,13 +28,13 @@ public class Attack : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<Weapon>() && !collision.gameObject.GetComponent<Weapon>().IsShooting)
         {
             _weapon = collision.gameObject;
             _weaponsc = collision.gameObject.GetComponent<Weapon>();
-            _weaponsc.Grab(); 
+            _weaponsc.Grab();
         }
 
     }
