@@ -17,10 +17,10 @@ TagManager:
   - 
   - Enemy
   - ThroughEnemy
-  - 
   - Floor
-  - Weapon
-  - ThroughGround
+  - PassingFloor
+  - 
+  - 
   - 
   - 
   - 
