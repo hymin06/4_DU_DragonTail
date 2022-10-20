@@ -8,7 +8,7 @@ public enum EnemyType
     ShieldEnemy,
     Boss
 }
-[CreateAssetMenu(menuName = "Asset/EnemySO")]
+[CreateAssetMenu(menuName = "SO/EnemySO")]
 public class EnemySO : ScriptableObject
 {
     public EnemyType enemyType;
@@ -21,6 +21,8 @@ public class EnemySO : ScriptableObject
     [SerializeField] float attackRange;
     [SerializeField] float attackSpeed;
     [SerializeField] float attackDelay;
+    [SerializeField] int dropMinExPValue;
+    [SerializeField] int dropMaxExPValue;
 
     public int HP() { return hp; }
     public int Damage() { return damage; }
@@ -30,4 +32,6 @@ public class EnemySO : ScriptableObject
     public float AttackRange() { return attackRange; }
     public float AttackSpeed() { return attackSpeed; }
     public float AttackDelay() { return attackDelay; }
+
+    public int DropExPValue() { return Random.Range(dropMinExPValue,dropMaxExPValue+1); }
 }
