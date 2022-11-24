@@ -13,14 +13,14 @@ TagManager:
   - UI
   - Player
   - BackGround
-  - 
+  - ThroughPlayer
   - 
   - Enemy
   - ThroughEnemy
   - Floor
   - PassingFloor
-  - 
-  - 
+  - Hurdle
+  - SlowAbility
   - 
   - 
   - 

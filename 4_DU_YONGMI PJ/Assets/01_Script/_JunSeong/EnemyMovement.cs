@@ -30,6 +30,12 @@ public class EnemyMovement : EnemyBase
 
     EnemyAttack _enemyAttack;
 
+
+    //È«Çü¹Î Ãß°¡
+    public bool bibleSpeedSlow;
+    public bool holyGrailSpeedSlow;
+    //
+
     protected override void Awake()
     {
         base.Awake();
@@ -52,7 +58,7 @@ public class EnemyMovement : EnemyBase
     {
         Debug.Log(nextMove);
         _rigid.velocity = new Vector2(nextMove * speed, _rigid.velocity.y);
-
+        
         dir = nextMove >= 0 ? Vector2.right : Vector2.left;
         origin = (Vector2)transform.position + (nextMove >= 0 ? Vector2.right : Vector2.left);
         if (_isThinking)
@@ -100,7 +106,17 @@ public class EnemyMovement : EnemyBase
             }
             DetectPlayer();
         }
-        
+        //È«Çü¹Î Ãß°¡
+        if (bibleSpeedSlow)
+        {
+            speed *= 0.9f;
+        }
+        if (holyGrailSpeedSlow)
+        {
+            speed *= 0.95f;
+        }
+        //
+            
         //else if (_isChasing && _enemyAttack._isAttack)
         //{
         //    speed = 0;
