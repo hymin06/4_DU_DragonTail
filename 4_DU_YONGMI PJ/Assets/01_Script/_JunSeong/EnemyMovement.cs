@@ -30,6 +30,12 @@ public class EnemyMovement : EnemyBase
 
     EnemyAttack _enemyAttack;
 
+
+    //È«Çü¹Î Ãß°¡
+    public bool bibleSpeedSlow;
+    public bool holyGrailSpeedSlow;
+    //
+
     protected override void Awake()
     {
         base.Awake();
@@ -57,12 +63,12 @@ public class EnemyMovement : EnemyBase
         origin = (Vector2)transform.position + (nextMove >= 0 ? Vector2.right : Vector2.left);
         if (_isThinking)
         {
-            if(nextMove != 0 && !_enemyAttack._isAttack)
+            if (nextMove != 0 && !_enemyAttack._isAttack)
             {
                 //_animator.SetBool("IsRun", true);
                 //_animator.SetBool("IsIdle", false);
             }
-            else if(nextMove == 0 && !_isChasing)
+            else if (nextMove == 0 && !_isChasing)
             {
                 //_animator.SetBool("IsIdle", true);
                 //_animator.SetBool("IsRun", false);
@@ -76,7 +82,7 @@ public class EnemyMovement : EnemyBase
             }
             if (!_isChasing)
             {
-                if(nextMove != 0)
+                if (nextMove != 0)
                 {
                     speed = _enemy.BeforeDetectSpeed();
                 }
@@ -89,9 +95,9 @@ public class EnemyMovement : EnemyBase
                     EnemyThink();
                 }
             }
-            else 
+            else
             {
-            
+
             }
 
             if (_enemyAttack._isAttack)
@@ -100,7 +106,17 @@ public class EnemyMovement : EnemyBase
             }
             DetectPlayer();
         }
-        
+        //È«Çü¹Î Ãß°¡
+        if (bibleSpeedSlow)
+        {
+            speed *= 0.9f;
+        }
+        if (holyGrailSpeedSlow)
+        {
+            speed *= 0.95f;
+        }
+        //
+
         //else if (_isChasing && _enemyAttack._isAttack)
         //{
         //    speed = 0;
@@ -112,7 +128,7 @@ public class EnemyMovement : EnemyBase
         if (collision.gameObject.layer == 7)
         {
             nextMove = -nextMove;
-            afterNoChasingTime = Random.Range(0f,1f);//º®Ãæµ¹ÈÄ Àû »ý°¢ÄðÅ¸ÀÓ
+            afterNoChasingTime = Random.Range(0f, 1f);//º®Ãæµ¹ÈÄ Àû »ý°¢ÄðÅ¸ÀÓ
         }
     }
 
@@ -128,11 +144,11 @@ public class EnemyMovement : EnemyBase
         {
             randThinkTime = Random.Range(1f, 2f);
             afterNoChasingTime = 0;
-            while(afterNoChasingTime < randThinkTime)
+            while (afterNoChasingTime < randThinkTime)
             {
                 afterNoChasingTime += Time.deltaTime;
             }
-            if(afterNoChasingTime > randThinkTime)
+            if (afterNoChasingTime > randThinkTime)
             {
                 EnemyThink();
             }
